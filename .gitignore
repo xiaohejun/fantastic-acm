@@ -1,6 +1,3 @@
-# ignore .txt
-*.txt
-
 # ignore .out
 *.out
 

@@ -8,8 +8,10 @@ typedef long long LL;
 int main(){
     freopen("in.txt", "r", stdin);
     ios::sync_with_stdio(0); cin.tie(0);
-    int64_t x;
-    cin >> x;
-    dbg(x)
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; ++i) cin >> a[i];
+    
     return 0;
 }

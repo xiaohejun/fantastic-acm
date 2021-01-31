@@ -144,7 +144,7 @@ bool isXORStr(char *strA, char *strB)
     }
     return false;
 }
-`
+
 int numSimilarGroups(char ** strs, int strsSize){
     UnionSet *set = createUnionSet(strsSize);
     for (int i = 0; i < strsSize; ++i) {

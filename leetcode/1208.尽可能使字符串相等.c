@@ -68,7 +68,12 @@ int equalSubstring(char * s, char * t, int maxCost){
     int nowCost = 0;
     while (l < n && r < n) {
         while (r < n && nowCost <= maxCost) {
-            nowCost += abs(s[r] - t[r]);
+            int det = abs(s[r] - t[r]);
+            nowCost += det;
+            if (nowCost > maxCost) {
+                nowCost -= det;
+                break;
+            }
             ++r;
         }
         int len = r - l;

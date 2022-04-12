@@ -6,7 +6,7 @@ typedef long long LL;
 #define dbg(x) cout << "line-(" << __LINE__ << "): " << #x"=" << x << endl;
 
 int main(){
-    //freopen("in.txt", "r", stdin);
+    freopen("in.txt", "r", stdin);
     ios::sync_with_stdio(0); cin.tie(0);
     int t;
     cin >> t;
@@ -25,49 +25,28 @@ int main(){
             }
             v.push_back(cnt);
         }
-        int sz = v.size();
-        int idx = 0;
-        int ans = 0;
-        while (idx < sz) {
-            if (v[idx] == 1) {
-                // nxt
-                if (idx + 1 < sz) {
-                    if (v[idx + 1] == 1) {
-                        ++ans;
-                        idx += 2;
-                    } else {
-                        v[idx + 1]--;
-                        ++ans;
-                        ++idx;
-                    }
-                } else {
-                    ++ans;
-                    ++idx;
-                }
-            } else {
-                ++ans;
-                ++idx;
+        queue<int> que;
+        for (int i = 0; i < n; ++i) {
+            if (i > 0 && s[i] == s[i - 1]) {
+                que.push(i);
             }
         }
-        cout << ans << endl;
+        int sz = v.size();
+        int del = 0;
+        int now = 0;
+        int ans = 0;
+        for (int i = 0; i < sz; ++i) {
+            while (!que.empty() && que.front() <= i) {
+                que.pop();
+            }
+            if (v[i] > 1) {
+
+            } else {
+
+            }
+            ++ans;
+            now += v[i];
+        }
     }
     return 0;
 }
-
-/*
-7
-6
-111010
-1
-0
-1
-1
-2
-11
-6
-101010
-7
-0101111
-3
-011
-*/

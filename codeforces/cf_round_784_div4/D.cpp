@@ -17,7 +17,7 @@ char a[MAX_N];
 char b[MAX_N];
 
 int main(){
-    freopen("in.txt", "r", stdin);
+    // freopen("in.txt", "r", stdin);
     ios::sync_with_stdio(0); cin.tie(0);
     int t;
     cin >> t;
@@ -25,57 +25,31 @@ int main(){
         int n;
         cin >> n;
         cin >> a;
-        if (n == 1) {
-            if (a[0] != 'W') {
-                cout << "NO" << endl;
-                continue;
-            }
-        }
-        for (int i = 0; i < n; ++i) {
-            b[i] = 'W';
-        }
         bool ok = true;
-        for (int i = n - 1; i >= 0; --i) {
-            if (a[i] == b[i]) {
-                continue;
+        int rCnt = 0;
+        int bCnt = 0;
+        for (int i = 0; i <= n && ok; ++i) {
+            char c = 'W';
+            if (i < n) {
+                c = a[i];
             }
-            if (a[i] == 'W') {
-                if (b[i] != 'W') {
+            if (c == 'W') {
+                if (rCnt + bCnt == 1 ||
+                    (rCnt == 0 && bCnt > 0) ||
+                    (bCnt == 0 && rCnt > 0)) {
                     ok = false;
-                    dbg(ok)
-                    break;
                 }
-            } else if (a[i] == 'R') {
-                // BR
-                if (i + 1 < n && b[i + 1] == 'B') {
-                    b[i] = 'R';
-                } else if (i - 1 >= 0) {
-                    b[i - 1] = 'B';
-                    b[i] = 'R';
+                rCnt = 0;
+                bCnt = 0;
+            } else {
+                if (c == 'R') {
+                    ++rCnt;
                 } else {
-                    dbg(i)
-                    ok = false;
+                    ++bCnt;
                 }
-            } else if (a[i] == 'B') {
-                // RB
-                dbg(a)
-                dbg(b)
-                if (i + 1 < n && b[i + 1] == 'R') {
-                    b[i] = 'B';
-                } else if (i - 1 >= 0) {
-                    b[i - 1] = 'R';
-                    b[i] = 'B';
-                } else {
-                    dbg(i)
-                    ok = false;
-                }
-            }
-            if (a[i] != b[i]) {
-                ok = false;
-                dbg(i)
-                break;
             }
         }
+        
         cout << (ok ? "YES" : "NO") << endl;
     }   
     return 0;

@@ -7,55 +7,19 @@ typedef long long LL;
 
 const int MAX_N = 2e5+10;
 int a[MAX_N];
-bool can[MAX_N];
+int n;
 
 void solve()
 {
-   int n;
    cin >> n;
    for (int i = 0; i < n; ++i) {
        cin >> a[i];
-       can[i] = true;
    }
-   bool ok = true;
-   for (int i = 1; i < n; ++i) {
-        int det = a[i] - a[i - 1] - 1;
-        // dbg(i)
-        // dbg(det)
-        // dbg(a[i])
-        // dbg(a[i - 1])
-        // dbg(i)
-        // dbg(det)
-        // for (int j = 0; j < n; ++j) {
-        //     cout << a[j] << " ";
-        // }
-        // cout << endl;
-        // for (int j = 0; j < n; ++j) {
-        //     cout << can[j] << " ";
-        // }
-        // cout << endl;
-        if (det == 0) {
-        } else if (det == 1) {
-            // i - 1 move + 1 ? i move - 1
-            if (can[i - 1]) {
-                a[i - 1]++;
-            } else if (can[i]) {
-                a[i]--;
-            } else {
-                ok = false;
-                break;
-            }
-        } else if (det == 2 && can[i] && can[i - 1]) {
-            a[i]--;
-            a[i - 1]++;
-        } else {
-            ok = false;
-            break;
-        }
-        can[i] = false;
-        can[i - 1] = false;
+   if (a[n - 1] - a[0] - n + 1 <= 2) {
+       cout << "YES" << endl;
+   } else {
+       cout << "NO" << endl;
    }
-   cout << (ok ? "YES" : "NO") << endl;
 }
 
 int main(){
@@ -68,3 +32,9 @@ int main(){
     }
     return 0;
 }
+
+/*
+最终
+a[n - 1] - a[0] + 1 <= n + 2
+
+*/

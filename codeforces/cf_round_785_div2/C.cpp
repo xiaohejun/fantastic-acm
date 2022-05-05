@@ -7,9 +7,8 @@ typedef long long LL;
 
 const int MOD = 1e9 + 7;
 const int MAX_N = 4e4+10;
-const int MAX_M = 550;
-LL dp[MAX_N][MAX_M];
-LL sum[MAX_N][MAX_M];
+const int MAX_M = 510;
+int dp[MAX_N][MAX_M];
 const int MAX_T = 1e4 + 10;
 int n[MAX_T];
 
@@ -44,7 +43,7 @@ void getPNum(vector<int> &pnum, int n, int max)
 }
 
 int main(){
-    freopen("in.txt", "r", stdin);
+    // freopen("in.txt", "r", stdin);
     ios::sync_with_stdio(0); cin.tie(0);
     int t;
     cin >> t;
@@ -58,38 +57,48 @@ int main(){
     for (int i = 1; i <= 5; ++i) {
         getPNum(pnum, i, mx);
     }
+    // dbg(mx)
+    // dbg(pnum.size())
 
     int m = pnum.size();
     memset(dp, 0, sizeof(dp));
-    memset(sum, 0, sizeof(sum));
+    dp[0][0] = 1;
+    for (int j = 1; j < m; ++j) {
+        dp[0][j] = 1;
+    }
     for (int i = 1; i <= mx; ++i) {
         for (int j = 1; j < m; ++j) {
             if (pnum[j] <= i) {
-                dp[i][j] = (sum[i - pnum[j]][j] + 1) % MOD;
+                dp[i][j] = dp[i - pnum[j]][j];
             }
-            sum[i][j] = (sum[i][j - 1] + dp[i][j]) % MOD;
+            dp[i][j] = (dp[i][j - 1] + 0LL + dp[i][j]) % MOD;
         }
     }
 
-    dbg(pnum.size())
-    for (int j = 1; j <= 10; ++j) {
-        cout << pnum[j] << " ";
-    }
-    dbg("")
-    for (int i = 1; i <= 5; ++i) {
-        for (int j = 1; j <= 10; ++j) {
-            cout << dp[i][j] << " ";
-        }
-        cout << endl;
-    }
+    // dbg(pnum.size())
+    // for (int j = 1; j <= 10; ++j) {
+    //     cout << pnum[j] << " ";
+    // }
+    // dbg("")
+    // for (int i = 1; i <= 5; ++i) {
+    //     for (int j = 1; j < m; ++j) {
+    //         cout << dp[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     for (int i = 0; i < t; ++i) {
-        cout << sum[n[i]][m - 1] << endl;
+        cout << dp[n[i]][m - 1] << endl;
     }
     return 0;
 }
 
 /*
+dp[1][1] = 1
+dp[2][1] = 1(1+1),
+dp[3][1] = 2(1+1+1, 2+1)
+dp[4][1] = (1+1+1+1, 2+1+1, 3+1)
+
 1位
 1 2 ... 9 = 9个
 

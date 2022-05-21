@@ -4,7 +4,7 @@ using namespace std;
 
 typedef long long LL;
 
-// #define on
+#define on
 
 #ifdef on
 #define dbg(x) cout << "line-(" << __LINE__ << "): " << #x"=" << x << endl;
@@ -14,36 +14,35 @@ typedef long long LL;
 
 const int MAX_N = 35;
 int a[MAX_N];
-int chg[26];
 
-inline int idx(char c)
+int fa[26];
+
+void init()
 {
-    return c - 'a';
+    for (int i = 0; i < 26; ++i) {
+        fa[i] = i;
+    }
 }
 
-inline int toCh(int x)
+int find(int u)
 {
-    return 'a' + x;
+    return fa[u] = (fa[u] == u ? u : find(fa[u]));
 }
 
-void calcStep(char c, int k, char &beC, int &need)
+void unionI(int u, int v)
 {
-    char curC = toCh(chg[idx(c)]);
-    int step = idx(curC);
-    if (k >= step) {
-        need = step;
-        beC = 'a';
+    u = find(u);
+    v = find(v);
+    if (u < v) {
+        fa[v] = u;
     } else {
-        need = k;
-        beC = (char)(curC - k);
+        fa[u] = v;
     }
 }
 
-void updChg(char c, char beC)
+bool same(int u, int v)
 {
-    for (int i = idx(c); i >= idx(beC); --i) {
-        chg[i] = idx(beC);
-    }
+    return find(u) == find(v);
 }
 
 void solve()
@@ -52,69 +51,29 @@ void solve()
     cin >> n >> k;
     string s;
     cin >> s;
-    // if (k >= 25) {
-    //     for (int i = 0; i < n; ++i) {
-    //         cout << 'a';
-    //     }
-    //     cout << endl;
-    //     return;
-    // }
-    dbg(s)
-    dbg(k)
-    for (int i = 0; i < 26; ++i) {
-        chg[i] = i;
-    }
-    int curK = k;
-    char lstBeC = '#';
-    char lstC = '#';
-    int lstNeed = 0;
-    bool needLst = true;
-    for (int i = 0; i < n; ++i) {
-        if (curK == 0) {
-            break;
+    init();
+    for (int i = 0; i < n && k >= 0; ++i) {
+        char c = s[i];
+        char toC = '#';
+        int step = c - 'a';
+        if (step <= k) {
+            toC = 'a';
+        } else {
+            toC = (char)(c - k);
+            step = c - toC;
         }
-        char beC;
-        int need;
-        calcStep(s[i], curK, beC, need);
-
-        if (needLst) {
-            lstC = s[i];
-            lstBeC = beC;
-            lstNeed = need;
-            needLst = false;
-            // todo_h
-            if (i != n - 1) {
-                continue;
+        if (!same(c - 'a', toC - 'a')) {
+            for (char cur = toC; cur <= c; ++cur) {
+                if (!same(toC - 'a', cur - 'a')) {
+                    unionI(toC - 'a', cur - 'a');
+                    --k;
+                }
             }
         }
-        dbg(lstC)
-        dbg(lstBeC)
-        dbg(lstNeed)
-        // cout << s[i] << " -> " << beC << " " << need << endl;
-        bool c1 = (i != 0 && !((s[i] >= lstC) && (beC <= lstBeC)));
-        bool c2 = (i == n - 1);
-        if (c1 || c2) {
-            dbg("stop")
-            // 停止了
-            curK -= lstNeed;
-            updChg(lstC, lstBeC);
-            if (i != n - 1) {
-                --i;
-            }
-            needLst = true;
-            continue;
-        }
-
-        lstC = s[i];
-        lstBeC = beC;
-        lstNeed = need;
-        // lstC = s[i];
-        // lst
     }
-
     for (int i = 0; i < n; ++i) {
-        char curC = toCh(chg[idx(s[i])]);
-        cout << curC;
+        char c = s[i];
+        cout << (char)(find(c - 'a') + 'a');
     }
     cout << endl;
 }
@@ -124,10 +83,11 @@ x -> y
 
 
 所有<=x的都能变成y，除了'z' -> 'a'
+a b c d e f g h i j k l m n o p q r s t u v w x y z
 */
 
 int main(){
-    freopen("in.txt", "r", stdin);
+    // freopen("in.txt", "r", stdin);
     ios::sync_with_stdio(0); cin.tie(0);
     int t;
     cin >> t;

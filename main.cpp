@@ -3,7 +3,13 @@
 using namespace std;
 
 typedef long long LL;
+
+#define on
+#ifdef on
 #define dbg(x) cout << "line-(" << __LINE__ << "): " << #x"=" << x << endl;
+#else
+#define dbg(x)
+#endif
 
 void solve()
 {
